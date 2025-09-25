@@ -12,40 +12,38 @@ jobs:
     runs-on: windows-2022
 
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@v1
-      with:
-        toolchain: stable
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
 
-    - name: Show Rust version
-      run: |
-        rustc -V
-        cargo -V
+      - name: Show Rust version
+        run: |
+          rustc -V
+          cargo -V
 
-    # Instalar vcpkg e configurar variável de ambiente
-    - name: Install vcpkg
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        cd vcpkg
-        bootstrap-vcpkg.bat
-      shell: cmd
+      - name: Install vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          vcpkgGitCommitId: 120deac3062162151622ca4860575a33844ba10b
 
-    - name: Set VCPKG_ROOT
-      run: echo "VCPKG_ROOT=${{ github.workspace }}\vcpkg" >> $env:GITHUB_ENV
-      shell: pwsh
+      - name: Install opus with vcpkg
+        run: |
+          $env:VCPKG_ROOT="${{ github.workspace }}/vcpkg"
+          $env:VCPKG_DEFAULT_TRIPLET="x64-windows-static"
+          $VCPKG_ROOT/vcpkg install opus
 
-    # Compilar em release para Windows
-    - name: Build StormDesk
-      run: cargo build --release --locked --target=x86_64-pc-windows-msvc
+      - name: Build StormDesk
+        run: cargo build --release --target=x86_64-pc-windows-msvc
 
-    # Upload do executável gerado
-    - name: Upload StormDesk.exe
-      uses: actions/upload-artifact@v4
-      with:
-        name: StormDesk-Windows
-        path: target/x86_64-pc-windows-msvc/release/StormDesk.exe
+      - name: Upload StormDesk.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: StormDesk-Windows
+          path: target/x86_64-pc-windows-msvc/release/StormDesk.exe
