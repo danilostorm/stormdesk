@@ -27,9 +27,23 @@ jobs:
         rustc -V
         cargo -V
 
+    # Instalar vcpkg e configurar variável de ambiente
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        bootstrap-vcpkg.bat
+      shell: cmd
+
+    - name: Set VCPKG_ROOT
+      run: echo "VCPKG_ROOT=${{ github.workspace }}\vcpkg" >> $env:GITHUB_ENV
+      shell: pwsh
+
+    # Compilar em release para Windows
     - name: Build StormDesk
       run: cargo build --release --locked --target=x86_64-pc-windows-msvc
 
+    # Upload do executável gerado
     - name: Upload StormDesk.exe
       uses: actions/upload-artifact@v4
       with:

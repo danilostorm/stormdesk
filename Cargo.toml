@@ -1,11 +1,11 @@
 [package]
-name = "stormdesk"
-version = "1.4.2"
-authors = ["StormDesk <contato@stormdesk.com.br>"]
+name = "StormDesk"
+version = "1.0.0"
+authors = ["HostStorm <contato@hoststorm.com.br>"]
 edition = "2021"
 build = "build.rs"
 description = "StormDesk Remote Desktop"
-default-run = "stormdesk"
+default-run = "StormDesk"
 rust-version = "1.75"
 
 [lib]
@@ -80,7 +80,7 @@ zip = "0.6"
 shutdown_hooks = "0.1"
 totp-rs = { version = "5.4", default-features = false, features = ["gen_secret", "otpauth"] }
 stunclient = "0.4"
-kcp-sys = { git = "https://github.com/rustdesk-org/kcp-sys"}
+kcp-sys= { git = "https://github.com/rustdesk-org/kcp-sys"}
 
 [target.'cfg(not(target_os = "linux"))'.dependencies]
 cpal = { git = "https://github.com/rustdesk-org/cpal", branch = "osx-screencapturekit" }
@@ -196,7 +196,7 @@ members = ["libs/scrap", "libs/hbb_common", "libs/enigo", "libs/clipboard", "lib
 exclude = ["vdi/host", "examples/custom_plugin"]
 
 [package.metadata.winres]
-LegalCopyright = "Copyright © 2025 StormDesk Ltd. Todos os direitos reservados."
+LegalCopyright = "Copyright © 2025 HostStorm Ltd. All rights reserved."
 ProductName = "StormDesk"
 FileDescription = "StormDesk Remote Desktop"
 OriginalFilename = "StormDesk.exe"
@@ -216,7 +216,7 @@ docopt = "1.1"
 
 [package.metadata.bundle]
 name = "StormDesk"
-identifier = "com.stormdesk.app"
+identifier = "com.hoststorm.stormdesk"
 icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
 osx_minimum_system_version = "10.14"
 
