@@ -34,10 +34,10 @@ jobs:
           vcpkgGitCommitId: 120deac3062162151622ca4860575a33844ba10b
 
       - name: Install opus with vcpkg
+        shell: pwsh
         run: |
-          $env:VCPKG_ROOT="${{ github.workspace }}/vcpkg"
-          $env:VCPKG_DEFAULT_TRIPLET="x64-windows-static"
-          $VCPKG_ROOT/vcpkg install opus
+          $env:VCPKG_ROOT="${{ github.workspace }}\vcpkg"
+          & "$env:VCPKG_ROOT\vcpkg.exe" install opus:x64-windows-static
 
       - name: Build StormDesk
         run: cargo build --release --target=x86_64-pc-windows-msvc
