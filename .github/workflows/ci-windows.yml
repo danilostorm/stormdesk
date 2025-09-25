@@ -27,13 +27,12 @@ jobs:
         rustc -V
         cargo -V
 
-    # Instala o vcpkg e usa o vcpkg.json
-    - name: Install vcpkg
+    # Instala as dependências usando vcpkg.json (com builtin-baseline)
+    - name: Instalar dependências vcpkg
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgDirectory: '${{ github.workspace }}/vcpkg'
         vcpkgJsonGlob: '${{ github.workspace }}/vcpkg.json'
-        triplet: x64-windows-static
 
     - name: Build StormDesk
       run: cargo build --release --target=x86_64-pc-windows-msvc
