@@ -27,11 +27,19 @@ jobs:
           rustc -V
           cargo -V
 
-      # Usa o manifest mode do vcpkg (lê vcpkg.json automaticamente)
+      # Instalar vcpkg e configurar baseline
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          vcpkgJsonGlob: vcpkg.json
+          vcpkgGitCommitId: 120deac3062162151622ca4860575a33844ba10b
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgJsonGlob: '**/vcpkg.json'
+
+      - name: Install dependencies with vcpkg
+        run: |
+          $env:VCPKG_ROOT="${{ github.workspace }}\vcpkg"
+          $env:VCPKG_DEFAULT_TRIPLET="x64-windows-static"
+          & $env:VCPKG_ROOT\vcpkg.exe install libvpx:x64-windows-static libyuv:x64-windows-static opus:x64-windows-static aom:x64-windows-static
 
       - name: Build StormDesk
         run: cargo build --release --target=x86_64-pc-windows-msvc
