@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  stormdesk-broker:
+    image: rustdesk/rustdesk-server:latest
+    container_name: stormdesk-broker
+    command: hbbs -r stormdesk-relay:21117
+    ports:
+      - "21114:21114"
+      - "21115:21115"
+      - "21116:21116"
+    environment:
+      - TZ=America/Sao_Paulo
+    restart: unless-stopped
+
+  stormdesk-relay:
+    image: rustdesk/rustdesk-server:latest
+    container_name: stormdesk-relay
+    command: hbbr
+    ports:
+      - "21117:21117"
+      - "21119:21119/udp"
+    environment:
+      - TZ=America/Sao_Paulo
+    restart: unless-stopped
+
+  coturn:
+    image: instrumentisto/coturn
+    container_name: coturn
+    network_mode: host
+    environment:
+      - TZ=America/Sao_Paulo
+    command: >
+      --min-port=49152 --max-port=49999
+      --listening-port=3478
+      --fingerprint --lt-cred-mech
+      --realm=${TURN_REALM}
+      --user=${TURN_USER}:${TURN_PASS}
+      --no-cli --no-software-attribute
+      --no-multicast-peers --stale-nonce=600
+      --log-file=stdout
+    restart: unless-stopped
