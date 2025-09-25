@@ -1,6 +1,7 @@
 {
   "name": "stormdesk-dependencies",
   "version-string": "1.0.0",
+  "builtin-baseline": "120deac3062162151622ca4860575a33844ba10b",
   "dependencies": [
     { "name": "aom", "host": true },
     { "name": "aom", "host": false },
@@ -40,7 +41,6 @@
       "platform": "((android | ios | (linux & arm32)) & static)"
     }
   ],
-  "builtin-baseline": "120deac3062162151622ca4860575a33844ba10b",
   "overrides": [
     { "name": "ffnvcodec", "version": "12.1.14.0" },
     { "name": "amd-amf", "version": "1.4.35" }
